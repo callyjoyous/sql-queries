@@ -1,0 +1,11 @@
+--gets the nth word from a string 
+
+SELECT 
+    recipeName, secondWord 
+FROM 
+    recipe
+    CROSS APPLY (SELECT value AS secondWord,
+            ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) RN FROM STRING_SPLIT(recipeName, ' ')
+     ) T
+     WHERE RN = 2
+group by recipeName, secondWord
